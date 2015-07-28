@@ -7,12 +7,12 @@ var cloudX = 0;
 var doubleCloud = -150;
 var moonX = 300;
 var speed = 0;
-var gravity = 2;
+var gravity = 6;
 var moving = false;
 var jumping = false;
 var jump = function(){
-    if (gravity < 4) {
-      gravity += 0.05;
+    if (gravity < 8) {
+      gravity += 0.2;
    }
    else{
       jumping = false;
@@ -151,7 +151,6 @@ void draw()
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
          if (currentPlayer.y > buildings[t].tall - 55) {
             currentPlayer.y = buildings[t].tall - 56;
-            gravity = 0;
             
             console.log(jumping + " " + buildings[t].tall + buildings[t].xPos);
             
@@ -167,7 +166,7 @@ $("body").keydown(function(){
    if (keyCode == 38) {
       if (jumping == false) {
          jumping = true;
-         gravity = -4;
+         gravity = -8;
       }
    }
 });
