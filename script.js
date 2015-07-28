@@ -149,9 +149,12 @@ void draw()
     
     for (var t = 0; t < buildings.length; t++) {
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
-         if (currentPlayer.y > buildings[t].tall - 55 && jumping == false) {
-            currentPlayer.xPos = buildings[t].tall - 55;
+         if (currentPlayer.y > buildings[t].tall - 55) {
+            currentPlayer.y = buildings[t].tall - 55;
             gravity = 0;
+            
+            console.log(jumping + " " + buildings[t].tall + buildings[t].xPos);
+            
          }
       }
     }
