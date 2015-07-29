@@ -21,6 +21,7 @@ var progress = start;
 //total coin goal
 var goal = 50;
 var win = false;
+var grounded = true;
 var Spikes = function(triangleYThree, triangleMove){
     this.triangleYThree = triangleYThree;
     this.triangleMove = triangleMove;
@@ -198,7 +199,7 @@ void draw()
                coins.push(new Coin(width+50,buildings[buildings.length-1].tall-30,30));
             }
             if (newCoin == 2) {
-               spikes.push(new Spikes(buildings[buildings.length-1].tall,width+50));
+               spikes.push(new Spikes(buildings[buildings.length-1].tall,width+25));
             }
         }
         buildings[i].drawBuild();
@@ -221,6 +222,12 @@ void draw()
     for(var y = 0; y < spikes.length; y++) {
       spikes[y].draw();
       spikes[y].move();
+      if (currentPlayer.x > spikes[y].triangleMove && currentPlayer.x < spikes[y].triangleMove + 70 && currentPlayer.y > spikes[y].triangleYThree -70) {
+         if (score > 0) {
+               score -= 1;
+         }
+      spikes.splice(y,1);
+      }
     }
     currentPlayer.draw();
     currentPlayer.move();
@@ -228,7 +235,8 @@ void draw()
     for (var t = 0; t < buildings.length; t++) {
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
          console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
-         if (currentPlayer.y > buildings[t+1].tall-40 && currentPlayer.x > buildings[t+1].xPos - 25) {
+         if (currentPlayer.y > buildings[t+1].tall-42 && currentPlayer.x > buildings[t+1].xPos - 25) {
+            grounded = true;
             stop = true;
             speed = 0;
          }
@@ -250,9 +258,10 @@ $("body").keydown(function(c){
       moving = true;
    }
    if (c.keyCode == 32) {
-      if (jumping == false) {
+      if (jumping == false && grounded == true) {
          jumping = true;
          gravity = -14;
+         grounded = false;
       }
    }
    if (c.keyCode == 40) {
