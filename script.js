@@ -24,22 +24,16 @@ var win = false;
 var Spikes = function(triangleYThree, triangleMove){
     this.triangleYThree = triangleYThree;
     this.triangleMove = triangleMove;
-    var triangleSize = triangleYThree - 44;
-    var triangleXThre = triangleMove+8;
-    var triangleXOne = triangleXThre;
-    var triangleXTwo =triangleXOne+8;
-    var triangleXThree = triangleXTwo+8;
-    var triangleXFour = triangleXThree+8;
-    var triangleXFive = triangleXFour+8;
+    
     this.draw = function() {
         noStroke();
         fill(150, 150, 150);
-        triangle(this.triangleMove, this.triangleYThree, this.triangleMove+4, triangleSize, triangleXThre, this.triangleYThree);
-        triangle(triangleXOne, this.triangleYThree, triangleXOne+4, triangleSize, triangleXOne+8, this.triangleYThree);
-        triangle(triangleXTwo, this.triangleYThree, triangleXTwo+4, triangleSize, triangleXTwo+8, this.triangleYThree);
-        triangle(triangleXThree, this.triangleYThree, triangleXThree+4, triangleSize, triangleXThree+8, this.triangleYThree);
-        triangle(triangleXFour, this.triangleYThree, triangleXFour+4, triangleSize, triangleXFour+8, this.triangleYThree);
-        triangle(triangleXFive, this.triangleYThree, triangleXFive+4, triangleSize, triangleXFive+8, this.triangleYThree);
+        triangle(this.triangleMove, this.triangleYThree, this.triangleMove+4, this.triangleYThree - 44, this.triangleMove+8, this.triangleYThree);
+        triangle(this.triangleMove+8, this.triangleYThree, this.triangleMove+8+4, this.triangleYThree - 44, this.triangleMove+8+8, this.triangleYThree);
+        triangle(this.triangleMove+8+8, this.triangleYThree, this.triangleMove+8+8+4, this.triangleYThree - 44, this.triangleMove+8+8+8, this.triangleYThree);
+        triangle(this.triangleMove+8+8+8, this.triangleYThree, this.triangleMove+8+8+8+4, this.triangleYThree - 44, this.triangleMove+8+8+8+8, this.triangleYThree);
+        triangle(this.triangleMove+8+8+8+8, this.triangleYThree, this.triangleMove+8+8+8+8+4, this.triangleYThree - 44, this.triangleMove+8+8+8+8+8, this.triangleYThree);
+        triangle(this.triangleMove+8+8+8+8+8, this.triangleYThree, this.triangleMove+8+8+8+8+8+4, this.triangleYThree - 44, this.triangleMove+8+8+8+8+8+8, this.triangleYThree);
     };
     this.move = function(){
       this.triangleMove -= speed;
@@ -204,7 +198,7 @@ void draw()
                coins.push(new Coin(width+50,buildings[buildings.length-1].tall-30,30));
             }
             if (newCoin == 2) {
-               spikes.push(new Spikes(buildings[buildings.length-1].tall),width+50);
+               spikes.push(new Spikes(buildings[buildings.length-1].tall,width+50));
             }
         }
         buildings[i].drawBuild();
@@ -247,7 +241,7 @@ void draw()
       }
     }
     if (moving == true && stop == false) {
-      speed = 9;
+      speed = 11;
     }
 };
 $("body").keydown(function(c){
