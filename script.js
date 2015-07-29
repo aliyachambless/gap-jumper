@@ -11,9 +11,37 @@ var gravity = 6;
 var moving = false;
 var jumping = false;
 var stop = false;
+//coin animation stuff
+var coinSize = 89;
+var coinX = 1000;
+var coinY = 170;
+var start = coinSize*1.09;
+var progress = start;
+//total coin goal
+var goal = 50;
+var win = false;
+var shadow = function(){
+    fill(254,233,45,80);
+    ellipse(coinX,coinY,coinSize,coinSize);
+    fill(207, 184, 37,80);
+    ellipse(coinX,coinY,coinSize*0.8,coinSize*0.8);
+};
+var coinFill = function(){
+    fill(173, 156, 31);
+    ellipse(coinX+coinSize/10,coinY+coinSize*0.06,coinSize,coinSize);
+    fill(254,233,45);
+    ellipse(coinX,coinY,coinSize,coinSize);
+    fill(207, 184, 37);
+    ellipse(coinX,coinY,coinSize*0.8,coinSize*0.8);
+    fill(173, 156, 31);
+    rect(coinX+coinSize*0.06,coinY+coinSize*0.32,coinSize*-0.2,coinSize*-0.6);
+    fill(254,233,45);
+    rect(coinX+coinSize*0.08,coinY+coinSize*0.32,coinSize*-0.1,coinSize*-0.6);
+};
+//end coin animation stuff
 var jump = function(){
-    if (gravity < 8) {
-      gravity += 0.2;
+    if (gravity < 12) {
+      gravity += 0.7;
    }
    else{
       jumping = false;
@@ -109,6 +137,30 @@ void setup()
 void draw()
 {
    background(6, 66, 63);
+   //score animation stuff
+   progress = start*((goal-score)/goal);
+    fill(255, 255, 255);
+    noStroke();
+    if(win === true){
+        strokeWeight(3);
+        for(var i = 0; i < 360; i+=0.5){
+            var noiseShine = noise(i*0.05);
+            stroke(255,255,255,noiseShine*35-15);
+            line(coinX,coinY,cos(i)*600,sin(i)*600);
+        }
+    }
+    coinFill();
+    fill(6, 66, 63);
+    rect(coinX-coinSize,coinY-coinSize/1.9,coinSize*2,progress);
+    shadow();
+    if(win === false){
+        fill(0,0,0);
+        textSize(coinSize/2.8);
+        text(round((score/goal)*100) + "%",coinX-coinSize/3.7,coinY+coinSize/7.7);
+    }  
+    fill(210, 217, 0);
+    text(score + " coins!",coinX-70,244);
+   
     noStroke();
         //moon
     fill(255, 250, 148);
@@ -119,15 +171,16 @@ void draw()
       jump();
    }
     for(var i = 0; i < buildings.length; i++){
-        buildings[i].drawBuild();
-        buildings[i].move();
-        if(buildings[i].xPos === -96 && moving == true){
+        if(buildings[i].xPos < -96 && moving == true){
             buildings.push(new Building(random(350,500),width));
+            buildings.splice(i,1);
             var newCoin = round(random(0,1));
             if (newCoin == 1) {
                coins.push(new Coin(width+50,buildings[buildings.length-1].tall-30,30));
             }
         }
+        buildings[i].drawBuild();
+        buildings[i].move();
     }
     for(var k = 0; k < cloudArray.length; k++){
       cloudArray[k].draw();
@@ -137,8 +190,8 @@ void draw()
     for(var y = 0; y < coins.length; y++){
       coins[y].draw();
       coins[y].move();
-      if (currentPlayer.x < coins[y].coinX + 10 && currentPlayer.x > coins[y].coinX - 10 && currentPlayer.y > coins[y].coinY -50){
-         coins[y].coinX = -400;
+      if (currentPlayer.x < coins[y].coinX + 25 && currentPlayer.x > coins[y].coinX - 25 && currentPlayer.y > coins[y].coinY -50){
+         coins.splice(y,1);
          score += 1;
          $("#score").html("score: "+ score);
       }
@@ -147,12 +200,11 @@ void draw()
     currentPlayer.move();
     
     for (var t = 0; t < buildings.length; t++) {
-      if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
+      if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 101) {
          console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
-         if (currentPlayer.y > buildings[t+1].tall-30 && currentPlayer.x > buildings[t+1].xPos - 25) {
+         if (currentPlayer.y > buildings[t+1].tall-40 && currentPlayer.x > buildings[t+1].xPos - 25) {
             stop = true;
             speed = 0;
-            console.log("stop");
          }
          if (currentPlayer.y < buildings[t+1].tall-30 && currentPlayer.x > buildings[t+1].xPos - 25) {
             stop = false;
@@ -162,20 +214,23 @@ void draw()
          }
       }
     }
+    if (moving == true && stop == false) {
+      speed = 10;
+    }
 };
-$("body").keydown(function(){
-   if (keyCode == 39 && stop == false) {
+$("body").keydown(function(c){
+   c.preventDefault();
+   if (c.keyCode == 39) {
       moving = true;
-      speed = 4;
    }
-   if (keyCode == 38) {
+   if (c.keyCode == 32) {
       if (jumping == false) {
          jumping = true;
-         gravity = -8;
+         gravity = -14;
       }
    }
-   if (keyCode == 40) {
-      gravity = 8;
+   if (c.keyCode == 40) {
+      gravity = 12;
    }
 });
 $("body").keyup(function(c){
