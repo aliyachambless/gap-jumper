@@ -2,6 +2,7 @@
 var buildings = [];
 var cloudArray = [];
 var coins = [];
+var spikes = [];
 var score = 0;
 var cloudX = 0;
 var doubleCloud = -150;
@@ -20,6 +21,30 @@ var progress = start;
 //total coin goal
 var goal = 50;
 var win = false;
+var Spikes = function(triangleYThree, triangleMove){
+    this.triangleYThree = triangleYThree;
+    this.triangleMove = triangleMove;
+    var triangleSize = triangleYThree - 44;
+    var triangleXThre = triangleMove+8;
+    var triangleXOne = triangleXThre;
+    var triangleXTwo =triangleXOne+8;
+    var triangleXThree = triangleXTwo+8;
+    var triangleXFour = triangleXThree+8;
+    var triangleXFive = triangleXFour+8;
+    this.draw = function() {
+        noStroke();
+        fill(150, 150, 150);
+        triangle(this.triangleMove, this.triangleYThree, this.triangleMove+4, triangleSize, triangleXThre, this.triangleYThree);
+        triangle(triangleXOne, this.triangleYThree, triangleXOne+4, triangleSize, triangleXOne+8, this.triangleYThree);
+        triangle(triangleXTwo, this.triangleYThree, triangleXTwo+4, triangleSize, triangleXTwo+8, this.triangleYThree);
+        triangle(triangleXThree, this.triangleYThree, triangleXThree+4, triangleSize, triangleXThree+8, this.triangleYThree);
+        triangle(triangleXFour, this.triangleYThree, triangleXFour+4, triangleSize, triangleXFour+8, this.triangleYThree);
+        triangle(triangleXFive, this.triangleYThree, triangleXFive+4, triangleSize, triangleXFive+8, this.triangleYThree);
+    };
+    this.move = function(){
+      this.triangleMove -= speed;
+    };
+};
 var shadow = function(){
     fill(254,233,45,80);
     ellipse(coinX,coinY,coinSize,coinSize);
@@ -174,9 +199,12 @@ void draw()
         if(buildings[i].xPos < -96 && moving == true){
             buildings.push(new Building(random(350,500),width));
             buildings.splice(i,1);
-            var newCoin = round(random(0,1));
+            var newCoin = round(random(0,2));
             if (newCoin == 1) {
                coins.push(new Coin(width+50,buildings[buildings.length-1].tall-30,30));
+            }
+            if (newCoin == 2) {
+               spikes.push(new Spikes(buildings[buildings.length-1].tall),width+50);
             }
         }
         buildings[i].drawBuild();
@@ -196,11 +224,15 @@ void draw()
          $("#score").html("score: "+ score);
       }
     }
+    for(var y = 0; y < spikes.length; y++) {
+      spikes[y].draw();
+      spikes[y].move();
+    }
     currentPlayer.draw();
     currentPlayer.move();
     
     for (var t = 0; t < buildings.length; t++) {
-      if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 101) {
+      if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
          console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
          if (currentPlayer.y > buildings[t+1].tall-40 && currentPlayer.x > buildings[t+1].xPos - 25) {
             stop = true;
@@ -215,7 +247,7 @@ void draw()
       }
     }
     if (moving == true && stop == false) {
-      speed = 10;
+      speed = 9;
     }
 };
 $("body").keydown(function(c){
