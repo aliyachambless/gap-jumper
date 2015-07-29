@@ -10,6 +10,7 @@ var speed = 0;
 var gravity = 6;
 var moving = false;
 var jumping = false;
+var stop = false;
 var jump = function(){
     if (gravity < 8) {
       gravity += 0.2;
@@ -137,8 +138,6 @@ void draw()
       coins[y].draw();
       coins[y].move();
       if (currentPlayer.x < coins[y].coinX + 10 && currentPlayer.x > coins[y].coinX - 10 && currentPlayer.y > coins[y].coinY -50){
-         console.log(coins[y].coinY);
-         console.log("colisioned");
          coins[y].coinX = -400;
          score += 1;
          $("#score").html("score: "+ score);
@@ -149,17 +148,23 @@ void draw()
     
     for (var t = 0; t < buildings.length; t++) {
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
+         console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
+         if (currentPlayer.y > buildings[t+1].tall-30 && currentPlayer.x > buildings[t+1].xPos - 25) {
+            stop = true;
+            speed = 0;
+            console.log("stop");
+         }
+         if (currentPlayer.y < buildings[t+1].tall-30 && currentPlayer.x > buildings[t+1].xPos - 25) {
+            stop = false;
+         }
          if (currentPlayer.y > buildings[t].tall - 55) {
-            currentPlayer.y = buildings[t].tall - 56;
-            
-            console.log(jumping + " " + buildings[t].tall + buildings[t].xPos);
-            
+            currentPlayer.y = buildings[t].tall - 56;  
          }
       }
     }
 };
 $("body").keydown(function(){
-   if (keyCode == 39) {
+   if (keyCode == 39 && stop == false) {
       moving = true;
       speed = 4;
    }
@@ -168,6 +173,9 @@ $("body").keydown(function(){
          jumping = true;
          gravity = -8;
       }
+   }
+   if (keyCode == 40) {
+      gravity = 8;
    }
 });
 $("body").keyup(function(c){
