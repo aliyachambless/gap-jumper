@@ -191,14 +191,14 @@ void draw()
       jump();
    }
     for(var i = 0; i < buildings.length; i++){
-        if(buildings[i].xPos < -96 && moving == true){
+        if(buildings[i].xPos < -99 && moving == true){
             buildings.push(new Building(random(350,500),width));
             buildings.splice(i,1);
-            var newCoin = round(random(0,2));
-            if (newCoin == 1) {
+            var newCoin = round(random(0,10));
+            if (newCoin == 2 || newCoin == 4 || newCoin == 6 || newCoin == 8 || newCoin == 10) {
                coins.push(new Coin(width+50,buildings[buildings.length-1].tall-30,30));
             }
-            if (newCoin == 2) {
+            if (newCoin == 9) {
                spikes.push(new Spikes(buildings[buildings.length-1].tall,width+25));
             }
         }
@@ -236,7 +236,6 @@ void draw()
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
          console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
          if (currentPlayer.y > buildings[t+1].tall-42 && currentPlayer.x > buildings[t+1].xPos - 25) {
-            grounded = true;
             stop = true;
             speed = 0;
          }
@@ -244,7 +243,8 @@ void draw()
             stop = false;
          }
          if (currentPlayer.y > buildings[t].tall - 55) {
-            currentPlayer.y = buildings[t].tall - 56;  
+            currentPlayer.y = buildings[t].tall - 56;
+            grounded = true;
          }
       }
     }
@@ -258,9 +258,11 @@ $("body").keydown(function(c){
       moving = true;
    }
    if (c.keyCode == 32) {
-      if (jumping == false && grounded == true) {
+      if (jumping == false) {
          jumping = true;
-         gravity = -14;
+         if (grounded == true) {
+            gravity = -14;
+         }
          grounded = false;
       }
    }
