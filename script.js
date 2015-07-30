@@ -1,6 +1,10 @@
 /* Processing.JS sketch */
 //game screen switch
-var playGame = true;
+var menu = true;
+var wheel = false;
+var instructions = false;
+var playGame = false;
+var stats = false;
 
 var buildings = [];
 var cloudArray = [];
@@ -21,6 +25,15 @@ var coinX = 1000;
 var coinY = 170;
 var start = coinSize*1.09;
 var progress = start;
+//bar animation
+var whole = score;
+var povertyLine;
+var percent = 0.77;
+var xPos;
+var yPos;
+var length;
+var barCoins = [];
+var finalScore = score * 0.77;
 //timer
 var timerColor = color(0, 255, 30);
 var timerX = 890;
@@ -30,6 +43,40 @@ var timerSize = 95;
 var goal = 50;
 var win = false;
 var grounded = true;
+var CoinFall = function(coinX,coinY,coinSize,gravity,speed){
+    this.coinX = coinX;
+    this.coinY = coinY;
+    this.coinSize = coinSize;
+    this.speed = speed;
+    this.gravity = gravity;
+    this.draw = function() {
+        fill(173, 156, 31);
+        ellipse(this.coinX+this.coinSize/10,this.coinY+this.coinSize*0.06,this.coinSize,this.coinSize);
+        fill(254,233,45);
+        ellipse(this.coinX,this.coinY,this.coinSize,this.coinSize);
+        fill(207, 184, 37);
+        ellipse(this.coinX,this.coinY,this.coinSize*0.8,this.coinSize*0.8);
+        fill(173, 156, 31);
+        rect(this.coinX+this.coinSize*0.06,this.coinY+this.coinSize*0.32,this.coinSize*-0.2,this.coinSize*-0.6);
+        fill(254,233,45);
+        rect(this.coinX+this.coinSize*0.08,this.coinY+this.coinSize*0.32,this.coinSize*-0.1,this.coinSize*-0.6);
+    };
+    this.fall = function(){
+        this.coinY += this.gravity;
+        this.coinX += this.speed;
+    };
+};
+var animate = function(){
+    if(score > finalScore){
+      score -= 0.25;
+      barCoins.push(new CoinFall(xPos +(length*(score/whole))+random(-20,-10),yPos+25,30,random(3,4),random(-0.5,0.5)));
+      barCoins.push(new CoinFall(xPos +(length*(score/whole))+random(-20,-10),yPos+25,30,random(3,4),random(-0.5,0.5)));
+    }
+    for(var i = 0; i < barCoins.length; i++){
+            barCoins[i].draw();
+            barCoins[i].fall();
+    }
+};
 var count = 60, timer = setInterval(function() {
     $("#counter").html(count--);
     if(count == 0) clearInterval(timer);
@@ -155,8 +202,56 @@ var Building = function(tall,xPos){
     };
 };
 var buildings = [];
+var menuScreen = function(){
+   background(255,5,255);
+   text("Menu: Press space to play",100,100);
+};
+
+var randomWheel = function(){
+   background(255,100,230);
+   text("Random wheel!",100,100);
+};
+
+var instructionScreen = function(){
+   background(100,255,255);
+   text("Collect coins!",100,100);
+};
+
+var statScreen = function(){
+   povertyLine = 300;
+   percent = 0.77;
+   xPos = 60;
+   yPos = 100;
+   length = 250;
+   coins = [];
+   
+    background(123, 224, 163);
+    noStroke();
+    //avatar
+    fill(77, 77, 77,90);
+    rect(5,yPos+3,45,45,11);
+    fill(64, 64, 64);
+    ellipse(27,yPos+20,20,27);
+    arc(27,yPos+47,35,28,180,360);
+    
+    fill(128, 122, 0,80);
+    rect(xPos,yPos,250,50,16);
+    if(stats){
+        animate();
+    }
+    fill(255, 234, 0);
+    rect(xPos,yPos,length*(score/whole),50,16);
+    fill(255, 255, 255,140);
+    rect(xPos+5,yPos+5,length*(score/whole)-10,13,16);
+    fill(115, 75, 0);
+    textSize(20);
+    text(score *200 + " dollars",xPos+30,yPos+35);
+    text(round((score/whole)*100) + " %",xPos + 273, yPos+30);
+    text("'__' women earn " +percent*100+  " cents to a mans dollar",4,30);
+};
+
 var play = function(){
-      background(6, 66, 63);
+   background(6, 66, 63);
    //score animation stuff
    progress = start*((goal-score)/goal);
     fill(255, 255, 255);
@@ -226,7 +321,16 @@ var play = function(){
          if (score > 0) {
                score -= 1;
          }
+      barCoins.push(new CoinFall(currentPlayer.x,currentPlayer.y,1));
       spikes.splice(y,1);
+      }
+    }
+    for (var i = 0; i < barCoins.length; i++) {
+      barCoins[i].draw();
+      barCoins[i].fall();
+      console.log(barCoins);
+      if (barCoins[i].coinY > 1000) {
+         barCoins.splice(i,1);
       }
     }
     currentPlayer.draw();
@@ -271,6 +375,9 @@ var play = function(){
     }
     if (count == 0) {
       playGame = false;
+      finalScore = score * percent;
+      whole = score;
+      stats = true;
     }
 };
 void setup()
@@ -287,8 +394,21 @@ void setup()
 };
 void draw()
 {
+   if (menu == true) {
+      menuScreen();
+   }
+   if (wheel == true) {
+      console.log("RandomWheelfunction");
+      randomWheel();
+   }
+   if (instructions == true) {
+      instructionScreen();
+   }
    if (playGame == true) {
       play();
+   }
+   if (stats == true) {
+      statScreen();
    }
 };
 $("body").keydown(function(c){
@@ -297,12 +417,28 @@ $("body").keydown(function(c){
       moving = true;
    }
    if (c.keyCode == 32) {
-      if (jumping == false) {
-         jumping = true;
-         if (grounded == true) {
-            gravity = -14;
+       if (instructions == true) {
+         instructions = false;
+         playGame = true;
+         count = 60;
+      }
+      if (wheel == true) {
+         wheel = false;
+         instructions = true;
+      }
+      if (menu == true) {
+         menu = false;
+         wheel = true;
+         console.log("spacebar clicked");
+      }
+      if (playGame == true) {
+         if (jumping == false) {
+            jumping = true;
+            if (grounded == true) {
+               gravity = -14;
+            }
+            grounded = false;
          }
-         grounded = false;
       }
    }
    if (c.keyCode == 40) {
