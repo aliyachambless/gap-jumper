@@ -1,4 +1,7 @@
 /* Processing.JS sketch */
+//game screen switch
+var playGame = true;
+
 var buildings = [];
 var cloudArray = [];
 var coins = [];
@@ -20,9 +23,9 @@ var start = coinSize*1.09;
 var progress = start;
 //timer
 var timerColor = color(0, 255, 30);
-var timerX = 200;
-var timerY = 200;
-var timerSize = 150;
+var timerX = 890;
+var timerY = 170;
+var timerSize = 95;
 //total coin goal
 var goal = 50;
 var win = false;
@@ -152,21 +155,8 @@ var Building = function(tall,xPos){
     };
 };
 var buildings = [];
-void setup()
-{
-   size(1200,700);
-   textFont(loadFont("courier"), 14);
-   for(var i = 0; i < 13; i++){
-            buildings.push(new Building(random(350,500),i*100));
-            coins.push(new Coin(buildings[i].xPos+50,buildings[i].tall-30,30))
-   }
-   for(var j = 0; j<5; j++){
-      cloudArray.push(new Cloud(random(-100,width),random(0.1,1)));
-   }
-};
-void draw()
-{
-   background(6, 66, 63);
+var play = function(){
+      background(6, 66, 63);
    //score animation stuff
    progress = start*((goal-score)/goal);
     fill(255, 255, 255);
@@ -279,6 +269,27 @@ void draw()
     else {
         timerColor = color(255, 0, 0);
     }
+    if (count == 0) {
+      playGame = false;
+    }
+};
+void setup()
+{
+   size(1200,700);
+   textFont(loadFont("courier"), 14);
+   for(var i = 0; i < 13; i++){
+            buildings.push(new Building(random(350,500),i*100));
+            coins.push(new Coin(buildings[i].xPos+50,buildings[i].tall-30,30))
+   }
+   for(var j = 0; j<5; j++){
+      cloudArray.push(new Cloud(random(-100,width),random(0.1,1)));
+   }
+};
+void draw()
+{
+   if (playGame == true) {
+      play();
+   }
 };
 $("body").keydown(function(c){
    c.preventDefault();
