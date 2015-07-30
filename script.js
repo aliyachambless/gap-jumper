@@ -18,10 +18,20 @@ var coinX = 1000;
 var coinY = 170;
 var start = coinSize*1.09;
 var progress = start;
+//timer
+var timerColor = color(0, 255, 30);
+var timerX = 200;
+var timerY = 200;
+var timerSize = 150;
 //total coin goal
 var goal = 50;
 var win = false;
 var grounded = true;
+var count = 60, timer = setInterval(function() {
+    $("#counter").html(count--);
+    if(count == 0) clearInterval(timer);
+}, 1000);
+
 var Spikes = function(triangleYThree, triangleMove){
     this.triangleYThree = triangleYThree;
     this.triangleMove = triangleMove;
@@ -179,7 +189,7 @@ void draw()
         text(round((score/goal)*100) + "%",coinX-coinSize/3.7,coinY+coinSize/7.7);
     }  
     fill(210, 217, 0);
-    text(score + " coins!",coinX-70,244);
+    text("$" +score * 200,coinX-40,244);
    
     noStroke();
         //moon
@@ -250,6 +260,24 @@ void draw()
     }
     if (moving == true && stop == false) {
       speed = 11;
+    }
+    //timer
+    fill(0, 0, 0);
+    ellipse(timerX,timerY,timerSize,timerSize);
+    noStroke();
+    fill(timerColor);
+    arc(timerX,timerY,timerSize,timerSize,-0.5*PI + ((60 - count)/60)*2*PI,1.5*PI);
+    fill(255, 255, 255);
+    textSize(35);
+    text(count,timerX-20,timerY+10);
+    if(count > 30){
+        timerColor = color(0, 255, 0);
+    }
+    else if(count > 15){
+        timerColor = color(255, 221, 0);
+    }
+    else {
+        timerColor = color(255, 0, 0);
     }
 };
 $("body").keydown(function(c){
