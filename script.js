@@ -321,14 +321,14 @@ var play = function(){
          if (score > 0) {
                score -= 1;
          }
-      barCoins.push(new CoinFall(currentPlayer.x,currentPlayer.y,1));
+      barCoins.push(new CoinFall(currentPlayer.x,currentPlayer.y,25,5,-3));
       spikes.splice(y,1);
       }
     }
     for (var i = 0; i < barCoins.length; i++) {
       barCoins[i].draw();
       barCoins[i].fall();
-      console.log(barCoins);
+      console.log(barCoins[i]);
       if (barCoins[i].coinY > 1000) {
          barCoins.splice(i,1);
       }
@@ -338,7 +338,6 @@ var play = function(){
     
     for (var t = 0; t < buildings.length; t++) {
       if (currentPlayer.x > buildings[t].xPos && currentPlayer.x < buildings[t].xPos + 100) {
-         console.log("player x: " + currentPlayer.x + "build x: " + buildings[t+1].xPos);
          if (currentPlayer.y > buildings[t+1].tall-42 && currentPlayer.x > buildings[t+1].xPos - 25) {
             stop = true;
             speed = 0;
