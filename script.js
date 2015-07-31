@@ -268,16 +268,16 @@ var Player = function(x,y,race){
    this.y = y;
    this.race = race;
    this.draw = function(){
-      if (this.race == "White") {
+      if (this.race == "A Caucasian") {
          fill(255,255,255);
       }
-      if (this.race == "African-American") {
+      if (this.race == "An African-American") {
          fill(255,255,0);
       }
-      if (this.race == "Asian") {
+      if (this.race == "An Asian") {
          fill(255,0,255);
       }
-      if (this.race == "Hispanic/Latina") {
+      if (this.race == "A Hispanic/Latina") {
          fill(0,255,255);
       }
       ellipse(this.x,this.y,50,100);
@@ -351,12 +351,12 @@ var Building = function(tall,xPos){
 var buildings = [];
 var menuScreen = function(){
   // var img = 
-  //$('#mycanvas').css("background-image", 'url("menuImage.jpg")');
+  background(0,0,0);
 //  PImage b;
 
     b = loadImage("menuImage.jpg");
 
-    image(b, 0, 0,width,height);
+    image(b, 100, 0,1000,height);
 
   
 };
@@ -428,22 +428,22 @@ var randomWheel = function(){
    //choose character
    var characterChoose = floor(random(0,4));
    if (characterChoose == 0) {
-      currentPlayer = new Player(110,100,"White");
+      currentPlayer = new Player(110,100,"A Caucasian");
       percent = 0.78;
       console.log("white");
    }
    if (characterChoose == 1) {
-      currentPlayer = new Player(110,100,"African-American");
+      currentPlayer = new Player(110,100,"An African-American");
       percent = 0.64;
       console.log("black");
    }
    if (characterChoose == 2) {
-      currentPlayer = new Player(110,100,"Asian");
+      currentPlayer = new Player(110,100,"An Asian");
       percent = 0.90;
       console.log("asian");
    }
    if (characterChoose == 3) {
-      currentPlayer = new Player(110,100,"Hispanic/Latina");
+      currentPlayer = new Player(110,100,"A Hispanic/Latina");
       percent = 0.54;
       console.log("latina");
    }
@@ -527,11 +527,11 @@ var statScreen = function(){
     }
     if (count < 59) {
       textSize(16);
-      text("Becuase your character is a/an "+currentPlayer.race+" woman, you earn " + round((1 - percent)*100) + " percent less money for playing the same game.",4,80);
+      text("Because your character is "+currentPlayer.race+" woman, you earn " + round((1 - percent)*100) + " percent less money even when you play the same game.",4,80);
     }
     fill(115, 75, 0);
     textSize(20);
-    text(currentPlayer.race+" women earn " +percent*100+  " cents to a white man's dollar for doing the same job.",4,30);
+    text(currentPlayer.race+" women earns an average of " +percent*100+  " percent of what an average Caucasian man earns.",4,30);
     console.log(count);
 };
 
