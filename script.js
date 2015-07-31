@@ -1,11 +1,147 @@
 /* Processing.JS sketch */
+/* @pjs preload="menuImage.jpg"; */
+//current player global var
+var currentPlayer;
+//var keyIsPressed;
+//sounds
+//var coinSound = new buzz.sound( "/146723__fins__coin-object", {
+  //  formats: [ "ogg", "mp3", "aac" ]
+//});
+
 //game screen switch
 var menu = true;
 var wheel = false;
 var instructions = false;
 var playGame = false;
 var stats = false;
+/*
+//random wheel
+var playedYet = false;
+var wheelSpeed = 0;
+var angle = 0;
+frameRate(50);
 
+translate(width/2, height/2);
+var avatars = [
+   1,
+   2,
+   3,
+   4
+    ///getImage("avatars/marcimus"),
+    //getImage("avatars/mr-pants"),
+    //getImage("avatars/mr-pink"),
+    //getImage("avatars/old-spice-man"),
+];
+var colors = [
+    color(230, 97, 188),
+    color(59, 205, 185),
+    color(240, 68, 34),
+    color(43, 200, 0),
+    color(255, 183, 0),
+    color(128, 0, 255),
+    color(0, 100, 255),
+    color(128, 128, 128)];
+var lines = true;
+var sections = avatars.length;
+var drawWheel = function() {
+    var angleChange = 360 / sections;
+    pushMatrix();
+    rotate(270);
+    if (avatars.length <= 0) {
+        return;
+    }
+    imageMode(CENTER);
+    var a = 0;
+    pushMatrix();
+    var index = -1;
+    for (var i = 0; i < avatars.length; i++) {
+        // draw the sector first
+        a = angleChange * i;
+        fill(colors[i]);
+        noStroke();
+        //rotate(angleChange);
+        arc(0, 0, 300, 300, angleChange*i, angleChange*(i+1));
+        /*stroke(0, 0, 0);
+        strokeWeight(9);
+        line(0, 0, 150 * cos(angleChange*i), 150 * sin(angleChange * i));
+        noStroke();
+        
+        pushMatrix();
+        rotate(angleChange * (i+0.5));
+        translate(width/4, 0);
+        scale(0.5, 0.5);
+        rotate(90);
+        image(avatars[i], 0, 0);
+        popMatrix();
+        if (wheelSpeed === 0 && playedYet) {
+            var a = 9.5;
+            var r = (-angle + a) % 360;
+            if (r < 0) {
+                r += 360;
+            }
+            if(r > angleChange*i && r<angleChange*(i+1)) {
+                index = i;
+            }
+        }
+    }
+    
+    for (i = 0; i < avatars.length; i++) {
+        if (!lines) {
+            break;
+        }
+        pushMatrix();
+        rotate(-1);
+        stroke(0, 0, 0);
+        strokeWeight(3);
+        line(0,0,0 + 150*cos(angleChange*i),0 + 150*sin(angleChange*i));
+        noStroke();
+        popMatrix();
+    }
+    
+    popMatrix();
+    popMatrix();
+    fill(0, 0, 0, 200);
+    ellipse(0, 0, 110, 110);
+   // popMatrix();
+    
+    
+    if (index !== -1) {
+        pushMatrix();
+        scale(0.4, 0.4);
+        image(avatars[index % sections], 0, 0);
+        popMatrix();
+        fill(255, 255, 255);
+        textAlign(CENTER, CENTER);
+        text("Result:", 0, -35);
+        textAlign(LEFT, TOP);
+    }
+    
+    stroke(0, 0, 0);
+    strokeWeight(8);
+    pushMatrix();
+    resetMatrix();
+    translate(200, 30);
+    rotate(-
+        (sin((angle * (360)) / angleChange) * 30 + 30)
+    );
+    line(0, 0, 0, 40);
+    popMatrix();
+    
+    
+    if (wheelSpeed === 0 && !playedYet) {
+        fill(255, 255, 255);
+        textSize(15);
+        textAlign(CENTER, CENTER);
+        text("Hold Space\nto set power!\nRelease to\nspin!!", 0, 0);
+        textAlign(LEFT, TOP);
+    }
+    textAlign(LEFT, TOP);
+    imageMode(CORNER);
+};
+var holdSpace = false;
+var holdTime = 0;
+*/
+//background
 var buildings = [];
 var cloudArray = [];
 var coins = [];
@@ -79,7 +215,7 @@ var animate = function(){
 };
 var count = 60, timer = setInterval(function() {
     $("#counter").html(count--);
-    if(count == 0) clearInterval(timer);
+    if(count == -1) clearInterval(timer);
 }, 1000);
 
 var Spikes = function(triangleYThree, triangleMove){
@@ -127,18 +263,29 @@ var jump = function(){
       jumping = false;
    }
 };
-var Player = function(x,y){
+var Player = function(x,y,race){
    this.x = x;
    this.y = y;
+   this.race = race;
    this.draw = function(){
-      fill(255,2,0);
+      if (this.race == "White") {
+         fill(255,255,255);
+      }
+      if (this.race == "African-American") {
+         fill(255,255,0);
+      }
+      if (this.race == "Asian") {
+         fill(255,0,255);
+      }
+      if (this.race == "Hispanic/Latina") {
+         fill(0,255,255);
+      }
       ellipse(this.x,this.y,50,100);
    };
    this.move = function(){
       this.y += gravity;
    };
 };
-var currentPlayer = new Player(110,100);
 var Coin = function(coinX,coinY,coinSize) {
    this.coinX = coinX;
    this.coinY = coinY;
@@ -203,23 +350,152 @@ var Building = function(tall,xPos){
 };
 var buildings = [];
 var menuScreen = function(){
-   background(255,5,255);
-   text("Menu: Press space to play",100,100);
+  // var img = 
+  //$('#mycanvas').css("background-image", 'url("menuImage.jpg")');
+//  PImage b;
+
+    b = loadImage("menuImage.jpg");
+
+    image(b, 0, 0,width,height);
+
+  
 };
+
 
 var randomWheel = function(){
    background(255,100,230);
    text("Random wheel!",100,100);
+   /*
+   pushMatrix();
+    rotate(angle);
+    drawWheel();
+    popMatrix();
+    
+    angle += wheelSpeed;
+    
+    var friction = 0;
+    if (abs(wheelSpeed) > 20) {
+        friction = 0.2;
+    }
+    else if (abs(wheelSpeed) > 12.5) {
+        friction = 0.15;
+    }
+    else if (abs(wheelSpeed) > 6) {
+        friction = 0.1;
+    }
+    else {
+        friction = 0.05;
+    }
+    if (wheelSpeed > 0.2) {
+        wheelSpeed -= friction;
+    }
+    else if (wheelSpeed < -0.2) {
+        wheelSpeed += friction;
+    }
+    else {
+        wheelSpeed = 0;
+    }
+    
+    
+    
+    // draw power
+    if ((keyIsPressed && holdSpace) && wheelSpeed === 0) {
+        holdTime += 3;
+        if (holdTime > 255) {
+            holdTime = 255;
+        }
+    }
+    fill(holdTime, 255 - holdTime, 0);
+    pushMatrix();
+    resetMatrix();
+    noStroke();
+    rect(100, 350, holdTime / 255 * 200, 30);
+    
+    popMatrix();
+    // for testing
+    var test = 0;
+    if (test === 1) {
+        angle += 0.2;
+        fill(0, 0, 0);
+        pushMatrix();
+        resetMatrix();
+        text(angle, 10, 30);
+        
+        popMatrix();
+    }
+};
+   */
+   //choose character
+   var characterChoose = floor(random(0,4));
+   if (characterChoose == 0) {
+      currentPlayer = new Player(110,100,"White");
+      percent = 0.78;
+      console.log("white");
+   }
+   if (characterChoose == 1) {
+      currentPlayer = new Player(110,100,"African-American");
+      percent = 0.64;
+      console.log("black");
+   }
+   if (characterChoose == 2) {
+      currentPlayer = new Player(110,100,"Asian");
+      percent = 0.90;
+      console.log("asian");
+   }
+   if (characterChoose == 3) {
+      currentPlayer = new Player(110,100,"Hispanic/Latina");
+      percent = 0.54;
+      console.log("latina");
+   }
 };
 
 var instructionScreen = function(){
-   background(100,255,255);
-   text("Collect coins!",100,100);
+   background(6, 66, 63);
+   for(var i = 0; i < buildings.length; i++){
+        if(buildings[i].xPos < -99 && moving == true){
+            buildings.push(new Building(random(350,500),width));
+            buildings.splice(i,1);
+        }
+        buildings[i].drawBuild();
+        buildings[i].move();
+    }
+    for(var k = 0; k < cloudArray.length; k++){
+      cloudArray[k].draw();
+      cloudArray[k].move();
+    }
+    noStroke();
+    console.log("hihi");
+    fill(255, 250, 148);
+    textFont("helvetica",100);
+    text("HOW TO PLAY",280,125);
+
+    
+    if (count <60) {
+        fill(255,255,255);
+        textFont("courier", 30);
+        text("GOAL: Collect as many coins as you can to go beyond the poverty",160,160);
+        text("             line ($10,000). Each coin is worth $200!",155,190);
+    }
+    if (count <59) {
+        fill(255,255,255);
+        textFont("courier", 30);
+        text("HOW: Press the space to jump and the right arrow key to run.", 200,230);
+    }
+    if (count<58) {
+        fill(255,255,255);
+        textFont("courier", 30);
+        text("CAUTION: Everyone experiences obstacles in life, and yours are spikes!",130,270);
+        text("                  Do NOT step on the spikes or you will lose coins!",120,300);
+    }
+    if (count<57) {
+        fill(255, 250, 148);
+        textFont("helvetica",30);
+        text("Press space to play!", 480,350);
+    }
 };
 
 var statScreen = function(){
    povertyLine = 300;
-   percent = 0.77;
    xPos = 60;
    yPos = 100;
    length = 250;
@@ -227,27 +503,36 @@ var statScreen = function(){
    
     background(123, 224, 163);
     noStroke();
-    //avatar
-    fill(77, 77, 77,90);
-    rect(5,yPos+3,45,45,11);
-    fill(64, 64, 64);
-    ellipse(27,yPos+20,20,27);
-    arc(27,yPos+47,35,28,180,360);
-    
-    fill(128, 122, 0,80);
-    rect(xPos,yPos,250,50,16);
-    if(stats){
-        animate();
+    if (count < 57) {
+      //avatar
+      fill(77, 77, 77,90);
+      rect(5,yPos+3,45,45,11);
+      fill(64, 64, 64);
+      ellipse(27,yPos+20,20,27);
+      arc(27,yPos+47,35,28,180,360);
+      
+      fill(128, 122, 0,80);
+      rect(xPos,yPos,250,50,16);
+      if(stats){
+          animate();
+      }
+      fill(255, 234, 0);
+      rect(xPos,yPos,length*(score/whole),50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+5,length*(score/whole)-10,13,16);
+      fill(115, 75, 0);
+      textSize(20);
+      text(score *200 + " dollars",xPos+30,yPos+35);
+      text(round((score/whole)*100) + " %",xPos + 273, yPos+30);
     }
-    fill(255, 234, 0);
-    rect(xPos,yPos,length*(score/whole),50,16);
-    fill(255, 255, 255,140);
-    rect(xPos+5,yPos+5,length*(score/whole)-10,13,16);
+    if (count < 59) {
+      textSize(16);
+      text("Becuase your character is a/an "+currentPlayer.race+" woman, you earn " + round((1 - percent)*100) + " percent less money for playing the same game.",4,80);
+    }
     fill(115, 75, 0);
     textSize(20);
-    text(score *200 + " dollars",xPos+30,yPos+35);
-    text(round((score/whole)*100) + " %",xPos + 273, yPos+30);
-    text("'__' women earn " +percent*100+  " cents to a mans dollar",4,30);
+    text(currentPlayer.race+" women earn " +percent*100+  " cents to a white man's dollar for doing the same job.",4,30);
+    console.log(count);
 };
 
 var play = function(){
@@ -287,7 +572,8 @@ var play = function(){
    }
     for(var i = 0; i < buildings.length; i++){
         if(buildings[i].xPos < -99 && moving == true){
-            buildings.push(new Building(random(350,500),width));
+            var lastBuilding = buildings[buildings.length-1];
+            buildings.push(new Building(random(350,500),lastBuilding.xPos+100));
             buildings.splice(i,1);
             var newCoin = round(random(0,10));
             if (newCoin == 2 || newCoin == 4 || newCoin == 6 || newCoin == 8 || newCoin == 10) {
@@ -321,7 +607,7 @@ var play = function(){
          if (score > 0) {
                score -= 1;
          }
-      barCoins.push(new CoinFall(currentPlayer.x,currentPlayer.y,25,5,-3));
+      barCoins.push(new CoinFall(currentPlayer.x,currentPlayer.y,25,5,-2));
       spikes.splice(y,1);
       }
     }
@@ -376,6 +662,7 @@ var play = function(){
       playGame = false;
       finalScore = score * percent;
       whole = score;
+      count = 60;
       stats = true;
     }
 };
@@ -412,6 +699,7 @@ void draw()
 };
 $("body").keydown(function(c){
    c.preventDefault();
+   //keyIsPressed = true;
    if (c.keyCode == 39) {
       moving = true;
    }
@@ -423,6 +711,7 @@ $("body").keydown(function(c){
       }
       if (wheel == true) {
          wheel = false;
+         count = 60;
          instructions = true;
       }
       if (menu == true) {
@@ -443,10 +732,25 @@ $("body").keydown(function(c){
    if (c.keyCode == 40) {
       gravity = 12;
    }
+   /*
+   if (keyCode === 83) {
+        holdSpace = true;
+    }
+    */
 });
 $("body").keyup(function(c){
    if (c.keyCode == 39) {
       moving = false;
       speed = 0;
    }
+   /*
+   if (keyCode === 83) {
+        holdSpace = false;
+    }
+    if (keyCode === 83 && wheelSpeed === 0) {
+        wheelSpeed = 6 + (holdTime / 255) * 60 + random(-3, 5);
+        holdTime = 0;
+        playedYet = true;
+    }
+    */
 });
