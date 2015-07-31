@@ -7,7 +7,9 @@ var currentPlayer;
 //var coinSound = new buzz.sound( "/146723__fins__coin-object", {
   //  formats: [ "ogg", "mp3", "aac" ]
 //});
-
+//stacys button vars
+var programs;
+var why;
 //game screen switch
 var menu = true;
 var wheel = false;
@@ -357,10 +359,50 @@ var menuScreen = function(){
     b = loadImage("menuImage.jpg");
 
     image(b, 100, 0,1000,height);
+    //stacys buttons
+    var playBtnX = 290;
+    var playBtnY = 30;
+    var playBtnWidth = 150;
+    var playBtnHeight = 50;
+    fill(0, 0,0);
+    rect(playBtnX, playBtnY, playBtnWidth, playBtnHeight,5);
+    rect(playBtnX+200, playBtnY, playBtnWidth, playBtnHeight,5);
+    rect(playBtnX+400, playBtnY, playBtnWidth, playBtnHeight,5);
+    fill(255, 255, 255);
+    text("Click to play",playBtnX+20,playBtnY+30);
+    text("Programs",playBtnX+243,playBtnY+30);
+    text("Why this game?",playBtnX+420,playBtnY+30);  
+    mouseClicked = function() {
+        if (mouseX >= playBtnX && mouseX <= (playBtnX+playBtnWidth) &&
+            mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+            wheel = true;    
+        }
+        if (mouseX >= playBtnX+200 && mouseX <= ((playBtnX+200)+playBtnWidth) &&
+            mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+            programs = true;
+        }
+        if (mouseX >= playBtnX+400 && mouseX <= ((playBtnX+400)+playBtnWidth) &&
+            mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+            why = true;
+        }
+    }
 
   
 };
+var programsScreen = function(){
+    background(6,66,63);
+    text("CHECK OUT THESE WOMEN EMPOWERMENT PROGRAMS", 100,100);
+};
 
+var whyScreen = function(){
+    background(6,66,63);
+    text("WHY", 100,100);
+    text("The reason why we did this is because.....",100,200);
+    text("MEET THE CREATORS",100,300);
+    text("Stacy",100,350);
+    text("Aliya", 100, 380);
+    text("Amanda",100,410);
+};
 
 var randomWheel = function(){
    background(255,100,230);
@@ -457,7 +499,6 @@ var instructionScreen = function(){
             buildings.splice(i,1);
         }
         buildings[i].drawBuild();
-        buildings[i].move();
     }
     for(var k = 0; k < cloudArray.length; k++){
       cloudArray[k].draw();
@@ -470,22 +511,28 @@ var instructionScreen = function(){
     text("HOW TO PLAY",280,125);
 
     
-    if (count <60) {
-        fill(255,255,255);
+       if (count <60) {
+        fill(255, 250, 148);
         textFont("courier", 30);
-        text("GOAL: Collect as many coins as you can to go beyond the poverty",160,160);
-        text("             line ($10,000). Each coin is worth $200!",155,190);
+        text("GOAL: ", 160,165);
+        fill(255,255,255);
+        text("In 60 seconds, collect as many coins as you can to go beyond ",255,165);
+        text("             the poverty line ($10,000). Each coin is worth $200!",155,190);
     }
     if (count <59) {
-        fill(255,255,255);
         textFont("courier", 30);
-        text("HOW: Press the space to jump and the right arrow key to run.", 200,230);
+        fill(255, 250, 148);
+        text("HOW: ",190,230);
+        fill(255,255,255);
+        text(" Press the space to jump and the right arrow key to run.", 270,230);
     }
     if (count<58) {
-        fill(255,255,255);
+        fill(255, 250, 148);
         textFont("courier", 30);
-        text("CAUTION: Everyone experiences obstacles in life, and yours are spikes!",130,270);
-        text("                  Do NOT step on the spikes or you will lose coins!",120,300);
+        text("CAUTION:",130,270);
+        fill(255,255,255);
+        text(" Everyone experiences obstacles in life, and yours are spikes!",270,270);
+        text("                   Do NOT step on the spikes or you will lose coins!",120,300);
     }
     if (count<57) {
         fill(255, 250, 148);
@@ -522,12 +569,60 @@ var statScreen = function(){
       rect(xPos+5,yPos+5,length*(score/whole)-10,13,16);
       fill(115, 75, 0);
       textSize(20);
-      text(score *200 + " dollars",xPos+30,yPos+35);
+      text(score *200 + " dollars",xPos+25,yPos+35);
       text(round((score/whole)*100) + " %",xPos + 273, yPos+30);
     }
     if (count < 59) {
       textSize(16);
       text("Because your character is "+currentPlayer.race+" woman, you earn " + round((1 - percent)*100) + " percent less money even when you play the same game.",4,80);
+    }
+    if (count < 55) {
+      text("Here is the averages of other ethnicities compared to a Caucasian man:",4,200);
+      //white guy
+      fill(128, 122, 0,80);
+      rect(xPos,yPos+110,250,50,16);
+      fill(255, 234, 0);
+      rect(xPos,yPos+110,length,50,16);
+      fill(115, 75, 0)
+      text("Caucasian Man",xPos+25,yPos+145);
+      text("100%",xPos + 273, yPos+140);
+      
+      //asian girl
+      fill(128, 122, 0,80);
+      rect(xPos,yPos+180,250,50,16);
+      fill(255, 234, 0);
+      rect(xPos,yPos+180,length*0.9,50,16);
+      fill(115, 75, 0)
+      text("Asian Woman",xPos+25,yPos+215);
+      text("90%",xPos + 273, yPos+210);
+      
+      //white girl
+      fill(128, 122, 0,80);
+      rect(xPos,yPos+250,250,50,16);
+      fill(255, 234, 0);
+      rect(xPos,yPos+250,length*0.78,50,16);
+      fill(115, 75, 0)
+      text("Caucasian Woman",xPos+25,yPos+285);
+      text("78%",xPos + 273, yPos+280);
+      
+      //black girl
+      fill(128, 122, 0,80);
+      rect(xPos,yPos+320,250,50,16);
+      fill(255, 234, 0);
+      rect(xPos,yPos+320,length*0.64,50,16);
+      fill(115, 75, 0)
+      text("African-American Woman",xPos+25,yPos+355);
+      text("64%",xPos + 273, yPos+350);
+      
+      //latina girll
+      fill(128, 122, 0,80);
+      rect(xPos,yPos+390,250,50,16);
+      fill(255, 234, 0);
+      rect(xPos,yPos+390,length*0.54,50,16);
+      fill(115, 75, 0)
+      text("Hispanic/Latina Woman",xPos+25,yPos+425);
+      text("54%",xPos + 273, yPos+420);
+      
     }
     fill(115, 75, 0);
     textSize(20);
@@ -665,6 +760,9 @@ var play = function(){
       count = 60;
       stats = true;
     }
+    if (currentPlayer.y > 458) {
+            gravity = 0;
+         }
 };
 void setup()
 {
@@ -695,6 +793,12 @@ void draw()
    }
    if (stats == true) {
       statScreen();
+   }
+   if (programs == true) {
+    programsScreen();
+   }
+   if (why == true) {
+    whyScreen();
    }
 };
 $("body").keydown(function(c){
