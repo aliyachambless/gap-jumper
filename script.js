@@ -19,6 +19,10 @@ var wheel = false;
 var instructions = false;
 var playGame = false;
 var stats = false;
+
+var coinsound = new buzz.sound( "coin", {
+    formats: [ "mp3" ]
+});
 /*
 //random wheel
 var playedYet = false;
@@ -661,11 +665,37 @@ var statScreen = function(){
     noStroke();
     if (count < 57) {
       //avatar
+      if (currentPlayer.race == "An Asian") {
+         image = new Image();
+         image.src = "asian icon.png";
+         var ctx = document.getElementById('mycanvas').getContext('2d');
+         ctx.drawImage(image,5,yPos-10);
+      }
+      if (currentPlayer.race == "An African-American") {
+         image = new Image();
+         image.src = "black icon.png";
+         var ctx = document.getElementById('mycanvas').getContext('2d');
+         ctx.drawImage(image,5,yPos-10);
+      }
+      if (currentPlayer.race == "A Hispanic/Latina") {
+         image = new Image();
+         image.src = "latina icon.png";
+         var ctx = document.getElementById('mycanvas').getContext('2d');
+         ctx.drawImage(image,5,yPos-10);
+      }
+      else if (currentPlayer.race == "A Caucasian") {
+         image = new Image();
+         image.src = "white icon.png";
+         var ctx = document.getElementById('mycanvas').getContext('2d');
+         ctx.drawImage(image,5,yPos-10);
+      }
+      /*
       fill(77, 77, 77,90);
       rect(5,yPos+3,45,45,11);
       fill(64, 64, 64);
       ellipse(27,yPos+20,20,27);
       arc(27,yPos+47,35,28,180,360);
+      */
       
       fill(128, 122, 0,80);
       rect(xPos,yPos,250,50,16);
@@ -686,48 +716,86 @@ var statScreen = function(){
       text("Because your character is "+currentPlayer.race+" woman, you earn " + round((1 - percent)*100) + " percent less money even when you play the same game.",4,80);
     }
     if (count < 55) {
+      fill(255, 234, 50);
+      if (score * 200 > 10000) {
+         text("You passed the poverty line!",xPos + 340, yPos+30);
+      }
+      if (score * 200 < 10000) {
+         text("You did not pass the poverty line :( ",xPos + 340, yPos+30);
+      }
+      fill(115, 75, 0)
       text("Here is the averages of other ethnicities compared to a Caucasian man:",4,200);
       //white guy
+      image = new Image();
+      image.src = "white man icon.png";
+      var ctx = document.getElementById('mycanvas').getContext('2d');
+      ctx.drawImage(image,5,yPos+100);
       fill(128, 122, 0,80);
       rect(xPos,yPos+110,250,50,16);
       fill(255, 234, 0);
       rect(xPos,yPos+110,length,50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+115,length-10,13,16);
       fill(115, 75, 0)
       text("Caucasian Man",xPos+25,yPos+145);
       text("100%",xPos + 273, yPos+140);
       
       //asian girl
+      image = new Image();
+      image.src = "asian icon.png";
+      var ctx = document.getElementById('mycanvas').getContext('2d');
+      ctx.drawImage(image,5,yPos+170);
       fill(128, 122, 0,80);
       rect(xPos,yPos+180,250,50,16);
       fill(255, 234, 0);
       rect(xPos,yPos+180,length*0.9,50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+185,length*0.9-10,13,16);
       fill(115, 75, 0)
       text("Asian Woman",xPos+25,yPos+215);
       text("90%",xPos + 273, yPos+210);
       
       //white girl
+      image = new Image();
+      image.src = "white icon.png";
+      var ctx = document.getElementById('mycanvas').getContext('2d');
+      ctx.drawImage(image,5,yPos+240);
       fill(128, 122, 0,80);
       rect(xPos,yPos+250,250,50,16);
       fill(255, 234, 0);
       rect(xPos,yPos+250,length*0.78,50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+255,length*0.78-10,13,16);
       fill(115, 75, 0)
       text("Caucasian Woman",xPos+25,yPos+285);
       text("78%",xPos + 273, yPos+280);
       
       //black girl
+      image = new Image();
+      image.src = "black icon.png";
+      var ctx = document.getElementById('mycanvas').getContext('2d');
+      ctx.drawImage(image,5,yPos+310);
       fill(128, 122, 0,80);
       rect(xPos,yPos+320,250,50,16);
       fill(255, 234, 0);
       rect(xPos,yPos+320,length*0.64,50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+325,length*0.64-10,13,16);
       fill(115, 75, 0)
       text("African-American Woman",xPos+25,yPos+355);
       text("64%",xPos + 273, yPos+350);
       
       //latina girll
+      image = new Image();
+      image.src = "latina icon.png";
+      var ctx = document.getElementById('mycanvas').getContext('2d');
+      ctx.drawImage(image,5,yPos+380);
       fill(128, 122, 0,80);
       rect(xPos,yPos+390,250,50,16);
       fill(255, 234, 0);
       rect(xPos,yPos+390,length*0.54,50,16);
+      fill(255, 255, 255,140);
+      rect(xPos+5,yPos+395,length*0.54-10,13,16);
       fill(115, 75, 0)
       text("Hispanic/Latina Woman",xPos+25,yPos+425);
       text("54%",xPos + 273, yPos+420);
@@ -735,7 +803,7 @@ var statScreen = function(){
     }
     fill(115, 75, 0);
     textSize(20);
-    text(currentPlayer.race+" women earns an average of " +percent*100+  " percent of what an average Caucasian man earns.",4,30);
+    text(currentPlayer.race+" woman earns an average of " +percent*100+  " percent of what an average Caucasian man earns.",4,30);
     console.log(count);
 };
 
@@ -800,7 +868,8 @@ var play = function(){
       coins[y].move();
       if (currentPlayer.x < coins[y].coinX + 25 && currentPlayer.x > coins[y].coinX - 25 && currentPlayer.y > coins[y].coinY -50){
          coins.splice(y,1);
-         score += 1;
+         score += 1; 
+         coinsound.stop().play();
          $("#score").html("score: "+ score);
       }
     }
