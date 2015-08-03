@@ -801,6 +801,37 @@ var statScreen = function(){
       text("54%",xPos + 273, yPos+420);
       
     }
+        if (count <53) {
+        var playBtnX = 330;
+        var playBtnY = 550;
+        var playBtnWidth = 150;
+        var playBtnHeight = 50;
+        fill(0, 0,0);
+        rect(playBtnX, playBtnY, playBtnWidth, playBtnHeight,5);
+        rect(playBtnX+200, playBtnY, playBtnWidth, playBtnHeight,5);
+        rect(playBtnX+400, playBtnY, playBtnWidth, playBtnHeight,5);
+        fill(255, 255, 255);
+        text("Play Again",playBtnX+23,playBtnY+30);
+        text("Programs",playBtnX+238,playBtnY+30);
+        text("Why this game",playBtnX+410,playBtnY+30);  
+        mouseClicked = function() {
+            if (mouseX >= playBtnX && mouseX <= (playBtnX+playBtnWidth) &&
+                mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+                playGame = true;
+                stats = false;
+                score = 0;
+                count = 60;
+            }
+            if (mouseX >= playBtnX+200 && mouseX <= ((playBtnX+200)+playBtnWidth) &&
+                mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+                programs = true;
+            }
+            if (mouseX >= playBtnX+400 && mouseX <= ((playBtnX+400)+playBtnWidth) &&
+                mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
+                why = true;
+            }
+        }
+    }
     fill(115, 75, 0);
     textSize(20);
     text(currentPlayer.race+" woman earns an average of " +percent*100+  " percent of what an average Caucasian man earns.",4,30);
