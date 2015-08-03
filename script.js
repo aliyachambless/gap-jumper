@@ -2,6 +2,7 @@
 /* @pjs preload="menuImage.jpg"; */
 //current player global var
 var currentPlayer;
+var playerRun;
 //var keyIsPressed;
 //sounds
 //var coinSound = new buzz.sound( "/146723__fins__coin-object", {
@@ -271,18 +272,31 @@ var Player = function(x,y,race){
    this.race = race;
    this.draw = function(){
       if (this.race == "A Caucasian") {
-         fill(255,255,255);
+            image = new Image();
+            image.src = "gap white pos1.png";
+            var ctx = document.getElementById('mycanvas').getContext('2d');
+            ctx.drawImage(image,this.x-40,this.y-105);
       }
       if (this.race == "An African-American") {
-         fill(255,255,0);
+            image = new Image();
+            image.src = "gap black pos1.png";
+            var ctx = document.getElementById('mycanvas').getContext('2d');
+            ctx.drawImage(image,this.x-40,this.y-105);
       }
       if (this.race == "An Asian") {
-         fill(255,0,255);
+            image = new Image();
+            image.src = "gap asian pos1.png";
+            var ctx = document.getElementById('mycanvas').getContext('2d');
+            ctx.drawImage(image,this.x-40,this.y-105);
       }
       if (this.race == "A Hispanic/Latina") {
-         fill(0,255,255);
+            image = new Image();
+            image.src = "gap latina pos1.png";
+            var ctx = document.getElementById('mycanvas').getContext('2d');
+            ctx.drawImage(image,this.x-40,this.y-105);
       }
-      ellipse(this.x,this.y,50,100);
+      console.log(this.y);
+      playerRun += 0.1;
    };
    this.move = function(){
       this.y += gravity;
