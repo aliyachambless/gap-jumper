@@ -2,7 +2,8 @@
 /* @pjs preload="menuImage.jpg"; */
 //current player global var
 var currentPlayer;
-var playerRun;
+var playerRun = 10;
+var pos1 = true;
 //var keyIsPressed;
 //sounds
 //var coinSound = new buzz.sound( "/146723__fins__coin-object", {
@@ -164,6 +165,14 @@ var coinX = 1000;
 var coinY = 170;
 var start = coinSize*1.09;
 var progress = start;
+//sound
+/*
+var jumpSound = new buzz.sound("arcade.mp3");
+//var timeOverSound = new buzz.sound("res/sound/gameOverSound");
+void play(soundToPlay) {
+   soundToPlay.play();
+};
+*/
 //bar animation
 var whole = score;
 var povertyLine;
@@ -259,6 +268,7 @@ var coinFill = function(){
 };
 //end coin animation stuff
 var jump = function(){
+   // play(jumpSound);
     if (gravity < 12) {
       gravity += 0.7;
    }
@@ -273,7 +283,18 @@ var Player = function(x,y,race){
    this.draw = function(){
       if (this.race == "A Caucasian") {
             image = new Image();
-            image.src = "gap white pos1.png";
+            if (playerRun%30 == 0) {
+               if (pos1 == false) {
+                  image.src = "gap white pos2 .png";
+                  pos1 = true;
+                  console.log("pos2");
+               }
+               else if(pos1 == true){
+                  image.src = "gap white pos1.png";
+                  pos1 = false;
+                  console.log("pos1");
+               }
+            }
             var ctx = document.getElementById('mycanvas').getContext('2d');
             ctx.drawImage(image,this.x-40,this.y-105);
       }
@@ -295,8 +316,8 @@ var Player = function(x,y,race){
             var ctx = document.getElementById('mycanvas').getContext('2d');
             ctx.drawImage(image,this.x-40,this.y-105);
       }
-      console.log(this.y);
-      playerRun += 0.1;
+      //console.log(this.y);
+      playerRun += 1;
    };
    this.move = function(){
       this.y += gravity;
@@ -540,7 +561,7 @@ var instructionScreen = function(){
       cloudArray[k].move();
     }
     noStroke();
-    console.log("hihi");
+   // console.log("hihi");
     fill(255, 250, 148);
     textFont("helvetica",100);
     text("HOW TO PLAY",280,125);
