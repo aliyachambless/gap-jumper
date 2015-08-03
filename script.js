@@ -507,6 +507,27 @@ var randomWheel = function(){
 
 var instructionScreen = function(){
    background(6, 66, 63);
+   var characterChoose = floor(random(0,4));
+   if (characterChoose == 0) {
+      currentPlayer = new Player(110,100,"A Caucasian");
+      percent = 0.78;
+      console.log("white");
+   }
+   if (characterChoose == 1) {
+      currentPlayer = new Player(110,100,"An African-American");
+      percent = 0.64;
+      console.log("black");
+   }
+   if (characterChoose == 2) {
+      currentPlayer = new Player(110,100,"An Asian");
+      percent = 0.90;
+      console.log("asian");
+   }
+   if (characterChoose == 3) {
+      currentPlayer = new Player(110,100,"A Hispanic/Latina");
+      percent = 0.54;
+      console.log("latina");
+   }
    for(var i = 0; i < buildings.length; i++){
         if(buildings[i].xPos < -99 && moving == true){
             buildings.push(new Building(random(350,500),width));
@@ -822,19 +843,21 @@ $("body").keydown(function(c){
       moving = true;
    }
    if (c.keyCode == 32) {
-       if (instructions == true) {
-         instructions = false;
-         playGame = true;
-         count = 60;
-      }
+      /*
       if (wheel == true) {
          wheel = false;
          count = 60;
          instructions = true;
       }
+      */
+      if (instructions == true) {
+         instructions = false;
+         playGame = true;
+         count = 60;
+      }
       if (menu == true) {
          menu = false;
-         wheel = true;
+         instructions = true;
          console.log("spacebar clicked");
       }
       if (playGame == true) {
