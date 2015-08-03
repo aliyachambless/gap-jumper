@@ -155,7 +155,7 @@ var cloudX = 0;
 var doubleCloud = -150;
 var moonX = 300;
 var speed = 0;
-var gravity = 6;
+var gravity = 12;
 var moving = false;
 var jumping = false;
 var stop = false;
@@ -283,7 +283,8 @@ var Player = function(x,y,race){
    this.draw = function(){
       if (this.race == "A Caucasian") {
             image = new Image();
-            if (playerRun%30 == 0) {
+            /*
+            if (playerRun%10 == 0) {
                if (pos1 == false) {
                   image.src = "gap white pos2 .png";
                   pos1 = true;
@@ -294,7 +295,8 @@ var Player = function(x,y,race){
                   pos1 = false;
                   console.log("pos1");
                }
-            }
+            } */
+            image.src = "gapwhitepos1.png";
             var ctx = document.getElementById('mycanvas').getContext('2d');
             ctx.drawImage(image,this.x-40,this.y-105);
       }
@@ -410,7 +412,8 @@ var menuScreen = function(){
     mouseClicked = function() {
         if (mouseX >= playBtnX && mouseX <= (playBtnX+playBtnWidth) &&
             mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
-            wheel = true;    
+            instructions = true;
+            menu = false;
         }
         if (mouseX >= playBtnX+200 && mouseX <= ((playBtnX+200)+playBtnWidth) &&
             mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
@@ -528,7 +531,8 @@ var randomWheel = function(){
 
 var instructionScreen = function(){
    background(6, 66, 63);
-   var characterChoose = floor(random(0,4));
+   //var characterChoose = floor(random(0,4));
+   var characterChoose = 0;
    if (characterChoose == 0) {
       currentPlayer = new Player(110,100,"A Caucasian");
       percent = 0.78;
@@ -874,6 +878,7 @@ $("body").keydown(function(c){
       if (instructions == true) {
          instructions = false;
          playGame = true;
+         gravity = 12;
          count = 60;
       }
       if (menu == true) {
