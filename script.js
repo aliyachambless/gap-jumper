@@ -494,11 +494,10 @@ var whyScreen = function(){
     text("Aliya", 100, 380);
     text("Amanda",100,410);
 };
-
+/*
 var randomWheel = function(){
    background(255,100,230);
    text("Random wheel!",100,100);
-   /*
    pushMatrix();
     rotate(angle);
     drawWheel();
@@ -557,7 +556,6 @@ var randomWheel = function(){
         popMatrix();
     }
 };
-   */
    //choose character
    var characterChoose = floor(random(0,4));
    if (characterChoose == 0) {
@@ -581,7 +579,7 @@ var randomWheel = function(){
       console.log("latina");
    }
 };
-
+*/
 var instructionScreen = function(){
    background(6, 66, 63);
    var characterChoose = floor(random(0,4));
@@ -990,10 +988,12 @@ void draw()
    if (menu == true) {
       menuScreen();
    }
+   /*
    if (wheel == true) {
       console.log("RandomWheelfunction");
       randomWheel();
    }
+   */
    if (instructions == true) {
       instructionScreen();
    }
