@@ -470,11 +470,15 @@ var menuScreen = function(){
         }
         if (mouseX >= playBtnX+200 && mouseX <= ((playBtnX+200)+playBtnWidth) &&
             mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
-            programs = true;
+            $('html, body').animate({
+               scrollTop: $("#second").offset().top
+            }, 2000);
         }
         if (mouseX >= playBtnX+400 && mouseX <= ((playBtnX+400)+playBtnWidth) &&
             mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
-            why = true;
+            $('html, body').animate({
+               scrollTop: $("#why").offset().top
+            }, 2000);
         }
     }
 
@@ -822,11 +826,15 @@ var statScreen = function(){
             }
             if (mouseX >= playBtnX+200 && mouseX <= ((playBtnX+200)+playBtnWidth) &&
                 mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
-                programs = true;
+                $('html, body').animate({
+               scrollTop: $("#second").offset().top
+            }, 2000);
             }
             if (mouseX >= playBtnX+400 && mouseX <= ((playBtnX+400)+playBtnWidth) &&
                 mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
-                why = true;
+                $('html, body').animate({
+               scrollTop: $("#why").offset().top
+            }, 2000);
             }
         }
     }
