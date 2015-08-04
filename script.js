@@ -813,9 +813,9 @@ var statScreen = function(){
         rect(playBtnX+200, playBtnY, playBtnWidth, playBtnHeight,5);
         rect(playBtnX+400, playBtnY, playBtnWidth, playBtnHeight,5);
         fill(255, 255, 255);
-        text("Play Again",playBtnX+23,playBtnY+30);
+        text("Play Again",playBtnX+30,playBtnY+30);
         text("Programs",playBtnX+238,playBtnY+30);
-        text("Why this game",playBtnX+410,playBtnY+30);  
+        text("Why this game",playBtnX+420,playBtnY+30);  
         mouseClicked = function() {
             if (mouseX >= playBtnX && mouseX <= (playBtnX+playBtnWidth) &&
                 mouseY >= playBtnY && mouseY <= (playBtnY+playBtnHeight)) {
@@ -841,7 +841,7 @@ var statScreen = function(){
     fill(115, 75, 0);
     textSize(20);
     text(currentPlayer.race+" woman earns an average of " +percent*100+  " percent of what an average Caucasian man earns.",4,30);
-    console.log(count);
+    //fconsole.log(count);
 };
 
 var play = function(){
